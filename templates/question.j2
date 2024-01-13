@@ -1,0 +1,97 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>情報活用力チェック</title>
+    <link rel="stylesheet" href="../result/css/question.css">
+    <script src="../result/js/Myjs/question.js"></script>
+    <style>
+            body {
+                background-color: #f8f9fa;
+            }
+    
+    
+            h2 {
+                color: #007bff;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            p {
+                margin-bottom: 20px;
+            }
+    
+            form {
+                margin-bottom: 20px;
+            }
+    
+            button {
+                margin-top: 20px;
+            }
+        </style>
+</head>
+<body>
+    <header class="header">
+        <!-- ヘッダーロゴ -->
+        <div class="logo">情報活用力チェック</div>
+    
+        <!-- ハンバーガーメニュー部分 -->
+        <div class="nav">
+    
+        <!-- ハンバーガーメニューの表示・非表示を切り替えるチェックボックス -->
+        <input id="drawer_input" class="drawer_hidden" type="checkbox">
+    
+        <!-- ハンバーガーアイコン -->
+        <label for="drawer_input" class="drawer_open"><span></span></label>
+    
+        <!-- メニュー -->
+        <nav class="nav_content">
+            <ul class="nav_list">
+                <li class="nav_item"><a href="#">TOP</a></li>
+                <li class="nav_item"><a href="#">分析結果履歴</a></li>
+                <li class="nav_item"><a href="#">問い合わせ</a></li>
+            </ul>
+        </nav>
+    
+        </div>
+    </header>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <h2 class="text-center">{{category}}</h2>
+                <div class="bordertitle">
+                    <p>メールアドレス: {{email}}</p>
+                    <p>大学名: {{university}}</p>
+                    <p>学年: {{grade}}</p>
+                    <p>学科: {{department}}</p>
+                </div>
+                <form action="{% if cnumber == 4 %}/check{% else %}/question{{ cnumber+1 }}{% endif %}" method="post">
+                    <div class="form-group">
+                        {% for item in question %}
+                            <label for="skill{{item.qnumber}}">Q{{ item.qnumber }}. {{item.sentence}}</label>
+                            <br>
+                            <div class="question">
+                                <input type="radio" id="yes{{item.qnumber}}" name="skill{{item.qnumber}}" value="yes" {% if item.radio_check == 'yes' %}checked{% endif %}  onchange="checkRadioSelected()">
+                                <label for="yes{{item.qnumber}}" class="label">〇</label>
+                                <input type="radio" id="no{{item.qnumber}}" name="skill{{item.qnumber}}" value="no" {% if item.radio_check == 'no' %}checked{% endif %}  onchange="checkRadioSelected()">
+                                <label for="no{{item.qnumber}}" class="label">✕</label>
+                                <input type="radio" id="unknown{{item.qnumber}}" name="skill{{item.qnumber}}" value="unknown" {% if item.radio_check == 'unknown' %}checked{% endif %}  onchange="checkRadioSelected()">
+                                <label for="unknown{{item.qnumber}}" class="label">?</label>
+                                <br>
+                                <div class="border"></div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                    <div class="transition">
+                        <button type="button" onclick="location.href='{{nextpage}}'" class="btn btn-link">前に戻る</button>
+                        <input type="submit" id="submit" value="{% if cnumber == 4 %}確認画面へ{% else %}次へ{% endif %}" disabled>
+                    </div>
+                </form>
+                <p class="page">{{cnumber}} / 4 </p>
+                <button onclick="location.href='/logout'" class="btn btn-link">ログアウト</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
